@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Smoke Test">
+
+
+
+    <listeners>
+        <listener class-name="Utilities.allureListeners"/>
+    </listeners>
+
+
+    <test name="Scenario 1 Login Test Dashboard">
+        <groups>
+            <run>
+                <include name="BaseLogin"/>
+                <include name="Smoke Test"/>
+            </run>
+        </groups>
+
+        <classes>
+            <class name="Testcase.Scenario_01.dashBoardTest"/>
+        </classes>
+    </test>
+
+
+    <test name="Scenario 3 GiftStore">
+        <groups>
+            <run>
+                <include name="BaseLogin"/>
+                <include name="Smoke Test"/>
+            </run>
+        </groups>
+
+        <classes>
+            <class name="Testcase.Scenario_03.giftStoreTest"/>
+        </classes>
+
+    </test>
+
+<test name="Scenario 4 feature">
+    <groups>
+        <run>
+            <include name="BaseLogin"/>
+            <include name="Smoke Test"/>
+        </run>
+    </groups>
+
+    <classes>
+        <class name="Testcase.Scenario_04.cartPageTest"/>
+    </classes>
+</test>
+
+
+
+
+    <test name="Scenario 6 Cheer-Up buddy">
+        <groups>
+            <run>
+                <include name="BaseLogin"/>
+                <include name="Smoke Test"/>
+            </run>
+        </groups>
+
+        <classes>
+            <class name="Testcase.Scenario_04.cartPageTest"/>
+        </classes>
+    </test>
+
+
+
+
+
+
+</suite>

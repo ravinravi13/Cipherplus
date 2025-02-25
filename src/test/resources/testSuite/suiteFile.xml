@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Regression Test">
+
+
+
+    <listeners>
+        <listener class-name="Utilities.allureListeners"/>
+    </listeners>
+
+
+<test name="Scenario 1 Login Test">
+  <classes>
+
+      <class name="Testcase.Scenario_01.dashBoardTest"/>
+  </classes>
+</test>
+
+
+
+
+
+
+
+
+
+
+</suite>
