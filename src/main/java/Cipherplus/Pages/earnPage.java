@@ -3,13 +3,12 @@ package Cipherplus.Pages;
 import Cipherplus.Base.BaseClass;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class earnPage extends BaseClass {
 
@@ -30,10 +29,29 @@ public class earnPage extends BaseClass {
     By earn_tablePointLoc = By.className("earn-body-pt");
     By earn_tableApproverLoc = By.className("earn-body-app");
     By earn_tableApplyNowBtnLoc = By.xpath("(//button[text()='Apply'])");
+    By applyButtons = By.xpath("(//button[@class='beautiful-button5'])");
+    By titlesLoc = By.xpath("(//p[@class='earn-body-title'])");
+    By actionOkButton = By.xpath("//button[@class='btn btn-primary']");
+    By appliedSuccessfullMsg = By.xpath("//p[text()='Applied successfully']");
+    By closeButton = By.className("close-button");
+    By textBoxLoc = By.xpath("//input[@placeholder='Enter reason here']");
 
 
 
 
+
+
+
+
+
+
+
+    @Step("Click the post category of :  {0} ")
+    public void clickCategories(String category)
+    {
+        By postCategory = By.xpath(category);
+        wait.until(ExpectedConditions.presenceOfElementLocated(postCategory)).click();
+    }
 
 
 
@@ -104,26 +122,85 @@ public class earnPage extends BaseClass {
 
 
     @Step("Get earn table content ")
-    public void getEarnTableContent()
+    public  List<Map<String,String>> getEarnTableContent()
     {
 
-
+        List<Map<String,String>>earnList = new ArrayList<>();
          WebElement Table = wait.until(ExpectedConditions.presenceOfElementLocated(earn_tableBodyLoc));
          List<WebElement> tableRows = Table.findElements(earn_tableContentsLoc);
          for(int i=0;i<tableRows.size();i++)
          {
+             Map<String, String> earnMap = new HashMap<>();
              String earnTableTitle = tableRows.get(i).findElement(earn_tableTitleLoc).getText();
              String earnTableDescription = tableRows.get(i).findElement(earn_tableDescriptionLoc).getDomAttribute("title");
              String earnTablePoint =  tableRows.get(i).findElement(earn_tablePointLoc).getText();
              String earnTableApprover = tableRows.get(i).findElement(earn_tableApproverLoc).getText();
+             earnMap.put("Title",earnTableTitle);
+             earnMap.put("Description",earnTableDescription);
+             earnMap.put("Reward Point",earnTablePoint);
+             earnMap.put("Approver",earnTableApprover);
 
+             earnList.add(earnMap);
 
-
-
-             
          }
+
+     return earnList;
+
     }
 
+
+    @Step("Click the Apply button in table")
+    public void clickRandomApplyButton() throws InterruptedException {
+        List<WebElement> buttons = BaseClass.driver.findElements(applyButtons);
+
+        List<WebElement> titles = BaseClass.driver.findElements(titlesLoc);
+
+        if(!buttons.isEmpty() && !titles.isEmpty())
+        {
+            Random random = new Random();
+            int randomIndex = random.nextInt(buttons.size());
+            WebElement randomApplyButton = buttons.get(randomIndex);
+            String buttonTitle = titles.get(randomIndex).getText();
+            Thread.sleep(3000);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", randomApplyButton);
+            randomApplyButton.click();
+
+            WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(textBoxLoc));
+            element.sendKeys("Testing");
+            System.out.println("Clicked button title : " + buttonTitle);
+        }else {
+            System.out.println("No buttons or titles found.");
+        }
+
+
+    }
+
+
+    @Step("Click the OK button")
+    public void clickOkButton()
+    {
+        wait.until(ExpectedConditions.presenceOfElementLocated(actionOkButton)).click();
+    }
+
+    @Step("Verify the Success Message of 'Applied Successfully' ")
+    public String getAppliedSuccessfullyMsg()
+    {
+        return wait.until(ExpectedConditions.presenceOfElementLocated(appliedSuccessfullMsg)).getText();
+
+    }
+
+
+    @Step("Click the Close Event Sign Up")
+    public void clickCloseButton()
+    {
+        wait.until(ExpectedConditions.presenceOfElementLocated(closeButton)).click();
+    }
+
+    @Step("Enter the Text in Event Sign Up")
+    public void enterEventSignUpTextBox(String message)
+    {
+
+    }
 
 
 

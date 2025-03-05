@@ -4,13 +4,14 @@ import Cipherplus.Base.BaseClass;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class cheerUpBuddyPage extends BaseClass {
 
@@ -32,8 +33,8 @@ public class cheerUpBuddyPage extends BaseClass {
   By suggestMailId = By.xpath("//ul[@class='suggestions-list']//li[1]");
   By giveBadgeForm = By.className("modal-content");
   By leaderBoardBadgeNameLoc = By.xpath("//h4[contains(@class,'badge-leaderboard-title text-center')]");
-
-
+  By leaderBoardHighestBadgeEmpCountLoc = By.xpath("//div[@class='text-center mt-2']//b[1]");
+  By listViewBadges = By.xpath("(//img[@alt='view'])");
 
 
 
@@ -89,9 +90,6 @@ public class cheerUpBuddyPage extends BaseClass {
 
 
 
-
-
-
   @Step("Enter employee mail Id as : {0}")
   public void enterEmployeeMailId(String mailId)
   {
@@ -107,9 +105,6 @@ public class cheerUpBuddyPage extends BaseClass {
   {
     wait.until(ExpectedConditions.presenceOfElementLocated(suggestMailId)).click();
   }
-
-
-
 
 
 
@@ -176,6 +171,22 @@ public class cheerUpBuddyPage extends BaseClass {
 
   }
 
+
+  public void displayBadgeDetails()
+  {
+    List<WebElement> viewButtons = BaseClass.driver.findElements(listViewBadges);
+    List<WebElement> badgeNames = driver.findElements(By.xpath("//p[@class='badge-p']"));
+
+
+    Random random = new Random();
+    int randomIndex = random.nextInt(viewButtons.size());
+    WebElement viewBtn = viewButtons.get(randomIndex);
+    String BadgeName = badgeNames.get(randomIndex).getText();
+
+    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", viewBtn);
+    viewBtn.click();
+
+  }
 
 
 
@@ -244,6 +255,15 @@ public class cheerUpBuddyPage extends BaseClass {
     BadgeElement.click();
 
   }
+
+  @Step("Check Highest Badge of employee")
+  public String getBadgeLeaderboardHighestBadgeEmpName()
+  {
+    WebElement FirstEmpBadgeCount = wait.until(ExpectedConditions.presenceOfElementLocated(leaderBoardHighestBadgeEmpCountLoc));
+      return FirstEmpBadgeCount.getText();
+  }
+
+
 
 
 

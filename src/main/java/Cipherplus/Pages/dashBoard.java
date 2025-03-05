@@ -17,8 +17,9 @@ public class dashBoard extends BaseClass {
    By txt_lifeTimePointsLoc = By.xpath("//div[@class='card2']//h4[1]");
    By txt_badgesCountLoc = By.xpath("//div[@class='card3']//h4[1]");
    By txt_distributePointsLoc = By.xpath("//div[@class='card4']//h4[1]");
-
-
+   By btn_claimButtonLoc = By.xpath("//button[text()='Claim now']");
+   By giftStoreSlogan = By.className("Heading");
+   By nav_DashboardLoc = By.linkText("Dashboard");
 
 
 
@@ -77,6 +78,30 @@ public class dashBoard extends BaseClass {
     public String getDistributePoints(){
         return wait.until(ExpectedConditions.presenceOfElementLocated(txt_distributePointsLoc)).getText();
     }
+
+
+    @Step("Click the Claim button in Available points")
+    public void clickClaimButton(){
+         wait.until(ExpectedConditions.presenceOfElementLocated(btn_claimButtonLoc)).click();
+    }
+
+
+    @Step("Check gift store page slogan of 'Earn - Redeem - Repeat' ")
+   public boolean checkGiftStoreSlogan()
+   {
+       return wait.until(ExpectedConditions.presenceOfElementLocated(giftStoreSlogan)).isDisplayed();
+   }
+
+
+    @Step("Click Dashboard in Navigation")
+    public void clickNavDashboard(){
+        wait.until(ExpectedConditions.presenceOfElementLocated(nav_DashboardLoc)).click();
+    }
+
+
+
+
+
 
 
 

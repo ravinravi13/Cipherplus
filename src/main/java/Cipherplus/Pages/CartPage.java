@@ -25,7 +25,7 @@ public class CartPage extends BaseClass {
     By SingleProductNameLoc = By.xpath("(//p[@class='product-name'])[2]");
     By singleProductPointLoc = By.cssSelector("#root > div > main > div > div.gifts-cards-container > div:nth-child(2) > div:nth-child(5) > span");
     By cartPageSingleProductNameLoc = By.tagName("h4");
-    By cartPageSinglePoint = By.xpath("//h4[text()='The Psychology of Money']/following-sibling::b");
+    By cartPageSinglePoint = By.xpath("//div[@class='col']//b[1]");
     By cartDeleteSingleProduct = By.className("x-img");
     By btn_cartCloseLoc = By.className("close-button");
    By cart_subTotalLoc = By.xpath("(//div[@class='col Sub-Total']//b)[2]");

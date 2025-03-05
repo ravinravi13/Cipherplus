@@ -24,7 +24,7 @@ public class dashBoardTest extends BaseClass {
 
 
 
-    @BeforeClass(groups = "BaseLogin")
+    @BeforeClass(groups = {"BaseLogin","Employee"})
     public void enterApplication() throws InterruptedException {
         launchBrowser("chrome");
 
@@ -43,7 +43,7 @@ public class dashBoardTest extends BaseClass {
 
 
 
-    @Test(priority = 1, description = "Verify login page",groups = {"Login","dashboard","Smoke Test","Regression Test"})
+    @Test(priority = 1, description = "Verify login page",groups = {"Login","dashboard","Smoke Test","Regression Test","Employee"})
     @Description("This test attempts the log into the Website and verify with dashboard user name and profile section user name")
     @Severity(SeverityLevel.CRITICAL)
     @Feature("Login")
@@ -60,7 +60,7 @@ public class dashBoardTest extends BaseClass {
 
 
 //
-    @Test(description = "Validate the Available points with API",groups = {"availablePoints","dashboard","Smoke Test","Regression"},priority = 2)
+    @Test(description = "Validate the Available points with API",groups = {"availablePoints","dashboard","Smoke Test","Regression","Employee"},priority = 2)
     @Description("This test attempts check the Available points on Dashboard page and check API response")
     @Severity(SeverityLevel.CRITICAL)
     @Feature("Available Points")
@@ -84,7 +84,7 @@ public class dashBoardTest extends BaseClass {
 
 
 
-    @Test(description = "Verify the Lifetime points validate with API Response",priority = 3,groups = {"Lifetime","dashboard","Smoke Test","Regression"})
+    @Test(description = "Verify the Lifetime points validate with API Response",priority = 3,groups = {"Lifetime","dashboard","Smoke Test","Regression","Employee"})
     @Description("This test attempts check the Lifetime points on dashboard")
     @Feature("Lifetime Points")
     @Severity(SeverityLevel.CRITICAL)
@@ -112,7 +112,7 @@ public class dashBoardTest extends BaseClass {
 
 
 
-    @Test(description = "Verify the Badges validate with API Response",priority = 3,groups = {"Badges","dashboard","Smoke Test","Regression"})
+    @Test(description = "Verify the Badges validate with API Response",priority = 3,groups = {"Badges","dashboard","Smoke Test","Regression","Employee"})
     @Description("This test attempts check the Badges on dashboard")
     @Feature("Badges")
     @Severity(SeverityLevel.CRITICAL)
@@ -127,7 +127,7 @@ public class dashBoardTest extends BaseClass {
 
 
 
-    @Test(description = "Verify the Distribute points validate with API Response",priority = 3,groups = {"Distribute","dashboard","Smoke Test","Regression"})
+    @Test(description = "Verify the Distribute points validate with API Response",priority = 3,groups = {"Distribute","dashboard","Smoke Test","Regression","Employee"})
     @Description("This test attempts check the Distribute points on dashboard")
     @Feature("Distribute points")
     @Severity(SeverityLevel.CRITICAL)
@@ -148,6 +148,22 @@ public class dashBoardTest extends BaseClass {
             System.out.println("Response body is empty.");
         }
     }
+
+    @Test(description = "Check Claim button functionality",priority = 4,groups = {"dashboard","Smoke Test","Regression","Employee"})
+    @Description("This test attempts to check the functionality of the Claim button to redirect and ensure the gift store URL is correct")
+    @Feature("GiftStore")
+    @Severity(SeverityLevel.NORMAL)
+    public void CP_TC_06_checkCLiamButton(){
+          obj_dashBoard.clickClaimButton();
+          Assert.assertEquals(BaseClass.driver.getCurrentUrl(),BaseClass.getProperty("giftStoreUrl"));
+          Assert.assertTrue(obj_dashBoard.checkGiftStoreSlogan());
+          obj_dashBoard.clickNavDashboard();
+    }
+
+
+
+
+
 
 
 

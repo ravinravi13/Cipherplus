@@ -37,7 +37,7 @@
 
     </test>
 
-<test name="Scenario 4 feature">
+<test name="Scenario 4 Cart feature">
     <groups>
         <run>
             <include name="BaseLogin"/>
@@ -53,7 +53,7 @@
 
 
 
-    <test name="Scenario 6 Cheer-Up buddy">
+    <test name="Scenario 5 earn ">
         <groups>
             <run>
                 <include name="BaseLogin"/>
@@ -62,9 +62,22 @@
         </groups>
 
         <classes>
-            <class name="Testcase.Scenario_04.cartPageTest"/>
+            <class name="Testcase.Scenario_05.earnPageTest"/>
         </classes>
     </test>
+
+<!--    <test name="Scenario 6 Cheer-Up buddy">-->
+<!--    <groups>-->
+<!--        <run>-->
+<!--            <include name="BaseLogin"/>-->
+<!--            <include name="Smoke Test"/>-->
+<!--        </run>-->
+<!--    </groups>-->
+
+<!--    <classes>-->
+<!--        <class name="Testcase.Scenario_04.cartPageTest"/>-->
+<!--    </classes>-->
+<!--</test>-->
 
 
 
