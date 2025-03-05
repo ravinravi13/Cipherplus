@@ -23,7 +23,7 @@ public class BaseService {
 
     public Response getRequest(String endpoint){
         return requestSpecification.contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + "")
+                .header("Authorization", "Bearer " + "YOUR_ACCESS_TOKEN") // Replace with a valid token or remove it
 
                 .get(endpoint);
     }
