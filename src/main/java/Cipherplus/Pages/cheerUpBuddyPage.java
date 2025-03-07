@@ -2,6 +2,7 @@ package Cipherplus.Pages;
 
 import Cipherplus.Base.BaseClass;
 import io.qameta.allure.Step;
+import jdk.dynalink.beans.StaticClass;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -35,9 +36,9 @@ public class cheerUpBuddyPage extends BaseClass {
   By leaderBoardBadgeNameLoc = By.xpath("//h4[contains(@class,'badge-leaderboard-title text-center')]");
   By leaderBoardHighestBadgeEmpCountLoc = By.xpath("//div[@class='text-center mt-2']//b[1]");
   By listViewBadges = By.xpath("(//img[@alt='view'])");
+ By  displayBadgeRowCount = By.xpath("//table[contains(@class,'display-badges-table table')]/tbody[1]/tr");
 
-
-
+ public static int randomIndex;
 
 
 
@@ -177,19 +178,29 @@ public class cheerUpBuddyPage extends BaseClass {
     List<WebElement> viewButtons = BaseClass.driver.findElements(listViewBadges);
     List<WebElement> badgeNames = driver.findElements(By.xpath("//p[@class='badge-p']"));
 
-
     Random random = new Random();
-    int randomIndex = random.nextInt(viewButtons.size());
+     randomIndex = random.nextInt(viewButtons.size());
     WebElement viewBtn = viewButtons.get(randomIndex);
-    String BadgeName = badgeNames.get(randomIndex).getText();
 
     ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", viewBtn);
     viewBtn.click();
 
+
   }
 
 
+  public String getBadgeName()
+  {
+      List<WebElement> badgeNames = driver.findElements(By.xpath("//p[@class='badge-p']"));
+      return badgeNames.get(randomIndex).getText();
+  }
 
+
+  public int getDisplayingBadgeRowCount()
+  {
+      List<WebElement> TableRow = BaseClass.driver.findElements(displayBadgeRowCount);
+      return TableRow.size();
+  }
 
 
 

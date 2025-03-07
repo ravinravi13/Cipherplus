@@ -3,6 +3,7 @@ package Testcase.Scenario_06;
 import Cipherplus.Base.BaseClass;
 import Cipherplus.Pages.CartPage;
 import Cipherplus.Pages.cheerUpBuddyPage;
+import Utilities.dataBaseConnect;
 import Utilities.readExcel;
 import io.qameta.allure.*;
 import org.openqa.selenium.By;
@@ -13,12 +14,18 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class cheerUpBuddyTest extends BaseClass {
 
 
     cheerUpBuddyPage obj_cheerUpBuddyPage = new cheerUpBuddyPage();
     CartPage obj_CartPage = new CartPage();
+    dataBaseConnect obj_dataBaseConnect =new dataBaseConnect();
+
 
     public int count = 0;
 
@@ -46,16 +53,48 @@ public class cheerUpBuddyTest extends BaseClass {
     @Features({
             @Feature("Cheer up Buddy "),
             @Feature("View Badge")})
-    public void VerifyBadgeCount() {
-        obj_cheerUpBuddyPage.clickCheepUpBuddy();
-        obj_cheerUpBuddyPage.clickViewBadgeButton();
-        String actualBadgeCount = obj_cheerUpBuddyPage.getBadgesCount();
-        String[] split = actualBadgeCount.split(":");
-//        boolean actualNoBadgeResult = obj_cheerUpBuddyPage.checkNoBadgeFound();
+    public void VerifyBadgeCount() throws SQLException {
 
-//        Assert.assertEquals(split[1].trim(), "0");
-//        Assert.assertTrue(actualNoBadgeResult);
-        obj_cheerUpBuddyPage.clickCloseViewButton();
+        int rows = readExcel.getRowCount(System.getProperty("user.dir") + BaseClass.getProperty("excelFilepath"), BaseClass.getProperty("cheerUpBuddyExcelSheetName"));
+        for (int i = 1; i <= rows; i++) {
+            obj_cheerUpBuddyPage.clickCheepUpBuddy();
+            obj_cheerUpBuddyPage.displayBadgeDetails();
+            String BadgeName = obj_cheerUpBuddyPage.getBadgeName();
+            System.out.println("Badge name = "+ BadgeName);
+            String actualBadgeCount = obj_cheerUpBuddyPage.getBadgesCount();
+            String[] split = actualBadgeCount.split(":");
+            if (split[1].trim().equals("0")) {
+                boolean actualNoBadgeResult = obj_cheerUpBuddyPage.checkNoBadgeFound();
+                Assert.assertTrue(actualNoBadgeResult);
+                obj_cheerUpBuddyPage.clickCloseViewButton();
+
+            } else {
+
+//                Connection connection = obj_dataBaseConnect.dbconnect();
+//                String query = "select  GivenDate,comments from EmployeeBadges where BadgeName =? and  GivenBy=6";
+//                PreparedStatement pstmt = connection.prepareStatement(query);
+//                pstmt.setString(1, BadgeName);
+//                ResultSet rs = pstmt.executeQuery();
+//                while (rs.next())
+//                {
+//
+//                }
+//
+//
+//
+//                int tableRowCount = obj_cheerUpBuddyPage.getDisplayingBadgeRowCount();
+//
+//
+//
+//                Assert.assertEquals(tableRowCount,);
+
+                obj_cheerUpBuddyPage.clickCloseViewButton();
+
+
+            }
+
+
+        }
     }
 
 
