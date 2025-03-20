@@ -66,18 +66,18 @@
         </classes>
     </test>
 
-<!--    <test name="Scenario 6 Cheer-Up buddy">-->
-<!--    <groups>-->
-<!--        <run>-->
-<!--            <include name="BaseLogin"/>-->
-<!--            <include name="Smoke Test"/>-->
-<!--        </run>-->
-<!--    </groups>-->
+    <test name="Scenario 6 Cheer-Up buddy">
+    <groups>
+        <run>
+            <include name="BaseLogin"/>
+            <include name="Smoke Test"/>
+        </run>
+    </groups>
 
-<!--    <classes>-->
-<!--        <class name="Testcase.Scenario_04.cartPageTest"/>-->
-<!--    </classes>-->
-<!--</test>-->
+    <classes>
+        <class name="Testcase.Scenario_06.cheerUpBuddyTest"/>
+    </classes>
+</test>
 
 
 

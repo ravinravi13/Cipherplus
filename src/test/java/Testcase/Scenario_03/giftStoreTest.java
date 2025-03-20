@@ -348,7 +348,6 @@ public class giftStoreTest extends BaseClass {
 
 
 
-
             rewardService obj_rewardService = new rewardService();
             Response response = obj_rewardService.getProduct();
             RewardResponse rewardResponse = response.as(RewardResponse.class);
