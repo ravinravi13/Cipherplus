@@ -23,7 +23,7 @@ public class BaseService {
 
     public Response getRequest(String endpoint) {
         return requestSpecification.contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + System.getenv("AZURE_ENTRA_TOKEN"))
+//                .header("Authorization", "Bearer " + System.getenv("AZURE_ENTRA_TOKEN"))
                 .get(endpoint);
     }
 
