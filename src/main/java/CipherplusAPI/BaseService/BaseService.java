@@ -21,9 +21,10 @@ public class BaseService {
 
 
 
-    public Response getRequest(String endpoint) {
+    public Response getRequest(String endpoint){
         return requestSpecification.contentType(ContentType.JSON)
-//                .header("Authorization", "Bearer " + System.getenv("AZURE_ENTRA_TOKEN"))
+                .header("Authorization", "Bearer " + "YOUR_ACCESS_TOKEN") // Replace with a valid token or remove it
+
                 .get(endpoint);
     }
 
