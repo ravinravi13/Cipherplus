@@ -20,13 +20,13 @@ public class BaseService {
     }
 
 
-//
-//    public Response getRequest(String endpoint){
-//        return requestSpecification.contentType(ContentType.JSON)
-//                .header("Authorization", " " + "") // Replace with a valid token or remove it
-//
-//                .get(endpoint);
-//    }
+
+    public Response getRequest(String endpoint){
+        return requestSpecification.contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + "YOUR_TOKEN") // Replace with a valid token or remove it
+
+                .get(endpoint);
+    }
 
 
 
