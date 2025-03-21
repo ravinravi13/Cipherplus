@@ -21,10 +21,9 @@ public class BaseService {
 
 
 
-    public Response getRequest(String endpoint){
+    public Response getRequest(String endpoint) {
         return requestSpecification.contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + "YOUR_TOKEN")
-
+                .header("Authorization", "Bearer " + System.getenv("YOUR_TOKEN_ENV_VAR"))
                 .get(endpoint);
     }
 
