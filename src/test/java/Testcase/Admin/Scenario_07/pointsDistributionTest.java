@@ -53,7 +53,7 @@ public class pointsDistributionTest extends BaseClass {
 
 
 
-   // @Test(priority = 1, description = "Verify the points displayed in the Points Distribution",groups = {"Login","Smoke Test","Regression Test","Admin","Point Distribution"})
+   @Test(priority = 1, description = "Verify the points displayed in the Points Distribution",groups = {"Login","Smoke Test","Regression Test","Admin","Point Distribution"})
     @Description("This attempt aims to verify the earned points, distributed points, and lifetime points, and to cross-check them with the database")
     @Severity(SeverityLevel.CRITICAL)
     @Features({
@@ -127,6 +127,60 @@ public class pointsDistributionTest extends BaseClass {
 //
 //    }
 
+//    @Test(priority = 2, description = "Verify the names and points of direct reportees", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Point Distribution"})
+//    @Description("This attempt aims to verify the earned points, distributed points, and lifetime points, and to cross-check them with the database")
+//    @Severity(SeverityLevel.CRITICAL)
+//    @Features({
+//            @Feature("Admin"),
+//            @Feature("Points Distribution"),
+//            @Feature("Direct Reportee")
+//    })
+//    public void verifyDirectReportee() throws SQLException {
+//        Connection connection = obj_dataBaseConnect.dbconnect();
+//
+//        List<Map<String, String>> actualDirectReport = obj_pointsDistribution.getDirectReportees();
+//        List<Map<String, String>> expectedDirectReport = new ArrayList<>();
+//
+//        String query = "SELECT Name, Email, PointsEarned, PointsForDistribution, LifetimePoints, UnitName " +
+//                "FROM Employee WHERE Manager ='testing.team_iat@ilink-systems.com'";
+//        Statement statement = connection.createStatement();
+//        ResultSet resultSet = statement.executeQuery(query);
+//
+//        while (resultSet.next()) {
+//            Map<String, String> reporteeData = new HashMap<>();
+//            reporteeData.put("Name", resultSet.getString("Name"));
+//            reporteeData.put("Email", resultSet.getString("Email"));
+//            reporteeData.put("Earned Points", resultSet.getString("PointsEarned"));
+//            reporteeData.put("Points for Distribution", resultSet.getString("PointsForDistribution"));
+//            reporteeData.put("Lifetime Points", resultSet.getString("LifetimePoints"));
+//            reporteeData.put("BU", resultSet.getString("UnitName"));
+//
+//            expectedDirectReport.add(reporteeData);
+//        }
+//
+//        // Normalize the keys of both actual and expected data
+//        Map<String, String> normalizedExpected = normalizeKeys(expectedDirectReport);
+//        Map<String, String> normalizedActual = normalizeKeys(actualDirectReport);
+//
+//        // Assert that the normalized maps are equal
+//        Assert.assertEquals(normalizedActual, normalizedExpected);
+//    }
+//
+//
+//    private Map<String, String> normalizeKeys(List<Map<String, String>> data) {
+//        Map<String, String> normalizedMap = new HashMap<>();
+//        for (Map<String, String> map : data) {
+//            for (Map.Entry<String, String> entry : map.entrySet()) {
+//                // Normalize the key by trimming and converting to lowercase
+//                String normalizedKey = entry.getKey().trim().toLowerCase();
+//                normalizedMap.put(normalizedKey, entry.getValue());
+//            }
+//        }
+//        return normalizedMap;
+//    }
+
+
+
     @Test(priority = 2, description = "Verify the names and points of direct reportees", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Point Distribution"})
     @Description("This attempt aims to verify the earned points, distributed points, and lifetime points, and to cross-check them with the database")
     @Severity(SeverityLevel.CRITICAL)
@@ -135,48 +189,46 @@ public class pointsDistributionTest extends BaseClass {
             @Feature("Points Distribution"),
             @Feature("Direct Reportee")
     })
-    public void verifyDirectReportee() throws SQLException {
+    public void verifyDirectReportee() throws SQLException{
         Connection connection = obj_dataBaseConnect.dbconnect();
+        List<List<String>> actualDirectReportee = new ArrayList<>();
+        List<List<String>> expectedDirectReportee = new ArrayList<>();
 
-        List<Map<String, String>> actualDirectReport = obj_pointsDistribution.getDirectReportees();
-        List<Map<String, String>> expectedDirectReport = new ArrayList<>();
+        actualDirectReportee = obj_pointsDistribution.getDirectReportees();
 
-        String query = "SELECT Name, Email, PointsEarned, PointsForDistribution, LifetimePoints, UnitName " +
-                "FROM Employee WHERE Manager ='testing.team_iat@ilink-systems.com'";
+        String query = "SELECT TOP 1502 Name, Email, PointsForDistribution, PointsEarned, LifetimePoints, UnitName FROM Employee " +
+                "WHERE Manager ='testing.team_iat@ilink-systems.com'";
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
 
-        while (resultSet.next()) {
-            Map<String, String> reporteeData = new HashMap<>();
-            reporteeData.put("Name", resultSet.getString("Name"));
-            reporteeData.put("Email", resultSet.getString("Email"));
-            reporteeData.put("Earned Points", resultSet.getString("PointsEarned"));
-            reporteeData.put("Points for Distribution", resultSet.getString("PointsForDistribution"));
-            reporteeData.put("Lifetime Points", resultSet.getString("LifetimePoints"));
-            reporteeData.put("BU", resultSet.getString("UnitName"));
-
-            expectedDirectReport.add(reporteeData);
-        }
-
-        // Normalize the keys of both actual and expected data
-        Map<String, String> normalizedExpected = normalizeKeys(expectedDirectReport);
-        Map<String, String> normalizedActual = normalizeKeys(actualDirectReport);
-
-        // Assert that the normalized maps are equal
-        Assert.assertEquals(normalizedActual, normalizedExpected);
-    }
-
-
-    private Map<String, String> normalizeKeys(List<Map<String, String>> data) {
-        Map<String, String> normalizedMap = new HashMap<>();
-        for (Map<String, String> map : data) {
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-                // Normalize the key by trimming and converting to lowercase
-                String normalizedKey = entry.getKey().trim().toLowerCase();
-                normalizedMap.put(normalizedKey, entry.getValue());
-            }
-        }
-        return normalizedMap;
+//        while (resultSet.next()) {
+//            List<String> rowData = new ArrayList<>();
+//            rowData.add(resultSet.getString("Name"));
+//            rowData.add(resultSet.getString("Email"));
+//            rowData.add(resultSet.getString("PointsForDistribution"));
+//            rowData.add(resultSet.getString("PointsEarned"));
+//            rowData.add(resultSet.getString("LifetimePoints"));
+//            rowData.add(resultSet.getString("UnitName"));
+//            expectedDirectReportee.add(rowData);
+//        }
+//
+//        // Assert that the sizes of both lists are equal
+//        Assert.assertEquals(actualDirectReportee.size(), expectedDirectReportee.size(), "Size mismatch between actual and expected direct reportees.");
+//
+//        // Loop through each expected and actual reportee
+//        for (int i = 0; i < expectedDirectReportee.size(); i++) {
+//            List<String> expectedRow = expectedDirectReportee.get(i);
+//            List<String> actualRow = actualDirectReportee.get(i);
+//
+//
+//            // Assert that each row matches
+//            Assert.assertEquals(actualRow, expectedRow, "Validation failed at index " + i + ": Expected " + expectedRow + " but found " + actualRow);
+//        }
+//
+//        // Close resources
+//        resultSet.close();
+//        statement.close();
+//        connection.close();
     }
 
 

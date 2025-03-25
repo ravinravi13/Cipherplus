@@ -3,6 +3,7 @@ package Cipherplus.Pages.AdminPage;
 import Cipherplus.Base.BaseClass;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -21,8 +22,8 @@ public class pointsDistribution extends BaseClass {
     By pointsDistributionLoc = By.xpath("//h4[text()='Points Distribution']");
     By dropBU = By.xpath("//button[@class='btn dropdown-toggle']");
     By directReportLoc =  By.xpath("//span[text()='Direct Reportees']");
-    By tableDirectReport = By.xpath("(//table[contains(@class,'table table-borderless')]//tr)[2]");
-    By tableDirectReportData = By.xpath("(//table[contains(@class,'table table-borderless')]//tr)[2]");
+    By tableDirectReport = By.xpath("//table[contains(@class,'table table-borderless')]//tbody//tr");
+    By tableDirectReportData = By.xpath("(//table[contains(@class,'table table-borderless')]//td)");
     By pointsEarnedLabel = By.xpath("//div[text()='Points Earned']");
     By pointForDistributionLabel = By.xpath("//div[text()='Points for Distribution']");
     By lifePointsLabel = By.xpath("//div[text()='Lifetime Points']");
@@ -61,66 +62,46 @@ public class pointsDistribution extends BaseClass {
         wait.until(ExpectedConditions.presenceOfElementLocated(directReportLoc)).click();
     }
 
+    @Step("Get the Direct Reports from UI Side")
+    public List<List<String>> getDirectReportees(){
+        List<List<String>> actualDirectReport = new ArrayList<>();
 
+        // Locate the table
+        WebElement table = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//table[contains(@class,'table table-borderless direct-reportees')]")));
+        System.out.println("Table found.");
 
-//   public void getDirectReportees()
-//   {
-//
-//
-//     List<Map<String,String>> actualDirectReport = new ArrayList<>();
-//
-//       WebElement directReportable = wait.until(ExpectedConditions.presenceOfElementLocated(tableDirectReport));
-//       List<WebElement> tableContent = BaseClass.driver.findElements(tableDirectReportData);
-//
-//       for(int i=0;i<tableContent.size();i++)
-//       {
-//
-//
-//
-//
-//       }
-//
-//
-//
-//
-//   }
+        // Locate the rows
+        List<WebElement> rows = table.findElements(By.xpath(".//tr")); // Use '.' to limit the search to the current table
+        System.out.println("Number of rows found: " + rows.size());
 
+        // Loop through each row
+        for (WebElement row : rows) {
+            List<WebElement> cells = row.findElements(By.xpath(".//td")); // Use '.' to limit the search to the current row
+            List<String> rowData = new ArrayList<>();
 
-    @Step("Get Direct Reportees from UI table")
-    public List<Map<String, String>> getDirectReportees() {
-        List<Map<String, String>> actualDirectReport = new ArrayList<>();
-        List<WebElement> tableContent = BaseClass.driver.findElements(tableDirectReportData);
-
-        // Ensure there are enough rows to prevent IndexOutOfBoundsException
-        for (WebElement row : tableContent) {
-            // Get the text of each cell in the row
-            List<WebElement> cells = row.findElements(By.tagName("td"));
-
-            // Ensure there are cells in the row
+            // Check if cells are found
             if (!cells.isEmpty()) {
-                Map<String, String> reporteeData = new HashMap<>();
+                for (int i = 0; i < cells.size(); i++) {
 
-                // Assuming the first cell contains "Name", second contains "Email", and so on
-                if (cells.size() >= 6) { // Ensure there are enough cells
-                    reporteeData.put("Name", cells.get(0).getText());
-                    reporteeData.put("Email", cells.get(1).getText());
-                    reporteeData.put("Points for Distribution", cells.get(2).getText());
-                    reporteeData.put("Earned Points", cells.get(3).getText());
-                    reporteeData.put("Lifetime Points", cells.get(4).getText());
-                    reporteeData.put("Bu", cells.get(5).getText());
-                    // Handle case for BU
+                    String value = cells.get(i).getText().trim();
+                    // Only add the value if it's not "Add Points"
+                    if (!value.equals("Add Points")) {
+                        rowData.add(value);
+                    }
+                }
 
-                    actualDirectReport.add(reporteeData); // Add to the list
+                // Only add rowData if it contains valid data
+                if (!rowData.isEmpty()) {
+                    System.out.println("Row data: " + rowData);
+                    actualDirectReport.add(rowData);
                 }
             }
         }
-        System.out.println("Actual : \n" +actualDirectReport);
+
         return actualDirectReport;
     }
 
-
-
-   @Step("Locate Points Earned label")
+    @Step("Locate Points Earned label")
    public String locatePointsEarned()
    {
        WebElement pointEarnedWebElement = wait.until(ExpectedConditions.presenceOfElementLocated(pointsEarnedLabel));
