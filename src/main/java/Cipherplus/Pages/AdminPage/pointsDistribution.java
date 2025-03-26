@@ -3,15 +3,13 @@ package Cipherplus.Pages.AdminPage;
 import Cipherplus.Base.BaseClass;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class pointsDistribution extends BaseClass {
 
@@ -30,6 +28,21 @@ public class pointsDistribution extends BaseClass {
     By txt_pointsEarnedLabel = By.xpath("(//div[@class='col pointsdist-cards']//div)[1]");
     By txt_pointForDistributionLabel = By.xpath("(//div[@class='col pointsdist-cards']//div)[3]");
     By txt_lifePointsLabel = By.xpath("(//div[@class='col pointsdist-cards']//div)[5]");
+    By Btn_AddPoints = By.xpath("(//button[@class='add-points-point-dist'])");
+    By txt_Name = By.xpath("//div[@class='row mb-2']//div[1]");
+    By txt_EarnedPointAddPoints = By.xpath("(//div[@class='col points-earned-card'])[1]");
+    By txt_LifetimePointsAddPoints = By.xpath("(//div[@class='col lifetime-points-card'])[1]");
+    By txt_pointsForDistributionAddPoints = By.xpath("(//div[@class='col points-for-distribution-card'])[1]");
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -57,33 +70,32 @@ public class pointsDistribution extends BaseClass {
 
 
     @Step("Click Direct Reportees button")
-    public void clickDirectReporteeButton()
-    {
-        wait.until(ExpectedConditions.presenceOfElementLocated(directReportLoc)).click();
-    }
-
-    @Step("Get the Direct Reports from UI Side")
-    public List<List<String>> getDirectReportees(){
+    public List<List<String>> getDirectReportees() {
         List<List<String>> actualDirectReport = new ArrayList<>();
 
-        // Locate the table
-        WebElement table = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//table[contains(@class,'table table-borderless direct-reportees')]")));
+        // Locate the table using JavaScript Executor
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        WebElement table = (WebElement) js.executeScript("return document.querySelector('table.table.table-borderless.direct-reportees');");
         System.out.println("Table found.");
 
-        // Locate the rows
-        List<WebElement> rows = table.findElements(By.xpath(".//tr")); // Use '.' to limit the search to the current table
+        // Locate the rows using JavaScript Executor
+        List<WebElement> rows = (List<WebElement>) js.executeScript("return arguments[0].getElementsByTagName('tr');", table);
         System.out.println("Number of rows found: " + rows.size());
 
-        // Loop through each row
+        // Loop through each row, but limit to 30 rows
+        int rowCount = 0; // Counter for the number of rows processed
         for (WebElement row : rows) {
-            List<WebElement> cells = row.findElements(By.xpath(".//td")); // Use '.' to limit the search to the current row
+            if (rowCount >= 30) { // Check if we've already processed 30 rows
+                break; // Exit the loop if we have
+            }
+
+            List<WebElement> cells = (List<WebElement>) js.executeScript("return arguments[0].getElementsByTagName('td');", row);
             List<String> rowData = new ArrayList<>();
 
             // Check if cells are found
             if (!cells.isEmpty()) {
-                for (int i = 0; i < cells.size(); i++) {
-
-                    String value = cells.get(i).getText().trim();
+                for (WebElement cell : cells) {
+                    String value = (String) js.executeScript("return arguments[0].innerText.trim();", cell);
                     // Only add the value if it's not "Add Points"
                     if (!value.equals("Add Points")) {
                         rowData.add(value);
@@ -92,14 +104,18 @@ public class pointsDistribution extends BaseClass {
 
                 // Only add rowData if it contains valid data
                 if (!rowData.isEmpty()) {
-                    System.out.println("Row data: " + rowData);
-                    actualDirectReport.add(rowData);
+//                     System.out.println("Row data: " + rowData);
+                     actualDirectReport.add(rowData);
+                    rowCount++; // Increment the counter after adding a valid row
                 }
             }
         }
 
         return actualDirectReport;
     }
+
+
+
 
     @Step("Locate Points Earned label")
    public String locatePointsEarned()
@@ -139,6 +155,54 @@ public class pointsDistribution extends BaseClass {
     public String getLifetimePoints()
     {
         return wait.until(ExpectedConditions.presenceOfElementLocated(txt_lifePointsLabel)).getText();
+    }
+
+
+    @Step("Click the Add points Button")
+    public void clickAddPointsButton() {
+        // Wait for the buttons to be present
+        List<WebElement> buttons = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Btn_AddPoints));
+
+        // Get the number of buttons found
+        int buttonLength = buttons.size();
+
+        // Check if there are any buttons available
+        if (buttonLength > 0) {
+            // Generate a random index to select a button
+            Random random = new Random();
+            int randomIndex = random.nextInt(buttonLength);
+
+            // Click the randomly selected button
+            buttons.get(randomIndex).click();
+        } else {
+            System.out.println("No buttons found to click.");
+        }
+    }
+
+
+    @Step("Get Name from UI who to provide")
+    public String  getNameFromAddPoints()
+    {
+        return wait.until(ExpectedConditions.presenceOfElementLocated(txt_Name)).getText();
+
+    }
+
+    @Step("Check Earned points who to Provide UI side")
+    public String getEarnedPointsFromAddPoints()
+    {
+        return wait.until(ExpectedConditions.presenceOfElementLocated(txt_EarnedPointAddPoints)).getText();
+    }
+
+    @Step("Check Lifetime points who to Provide UI side")
+    public String getLifeTimePointsFromAddPoints()
+    {
+        return wait.until(ExpectedConditions.presenceOfElementLocated(txt_LifetimePointsAddPoints)).getText();
+    }
+
+    @Step("Check Points for Distribution who to Provide UI side")
+    public String getPointsForDistributionFromAddPoints()
+    {
+        return wait.until(ExpectedConditions.presenceOfElementLocated(txt_pointsForDistributionAddPoints)).getText();
     }
 
 
