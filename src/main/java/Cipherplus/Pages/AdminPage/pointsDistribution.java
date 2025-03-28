@@ -33,9 +33,11 @@ public class pointsDistribution extends BaseClass {
     By txt_EarnedPointAddPoints = By.xpath("(//div[@class='col points-earned-card'])[1]");
     By txt_LifetimePointsAddPoints = By.xpath("(//div[@class='col lifetime-points-card'])[1]");
     By txt_pointsForDistributionAddPoints = By.xpath("(//div[@class='col points-for-distribution-card'])[1]");
-
-
-
+    By dropDown_SelectPointns = By.id("distributionType");
+    By txt_addPoints = By.id("addPoints");
+    By btn_Submit = By.xpath("//button[@type='submit']");
+    By searchBoxLoc = By.xpath("//input[@placeholder='Search']");
+    By btn_clickViewTranscationLoc = By.xpath("//button[text()=' View Transaction']");
 
 
 
@@ -204,6 +206,141 @@ public class pointsDistribution extends BaseClass {
     {
         return wait.until(ExpectedConditions.presenceOfElementLocated(txt_pointsForDistributionAddPoints)).getText();
     }
+
+
+
+    @Step("Select Points Type as  : {0}")
+    public void selectPointsType(String Type)
+    {
+       WebElement element =  wait.until(ExpectedConditions.presenceOfElementLocated(dropDown_SelectPointns));
+       Select pointsType = new Select(element);
+       pointsType.selectByVisibleText(Type);
+    }
+
+
+    @Step("Enter the Points : {0}")
+    public void enterAddPoints(String points)
+    {
+        WebElement element =  wait.until(ExpectedConditions.presenceOfElementLocated(txt_addPoints));
+        element.clear();
+        element.sendKeys(points);
+    }
+
+
+    @Step("Click Submit Button in Add")
+   public void clickSubmitButtonAddPoints()
+   {
+       wait.until(ExpectedConditions.presenceOfElementLocated(btn_Submit)).click();
+   }
+
+
+   @Step("Enter the Employee in search box  : {0}")
+    public void SearchEmployee(String EmployeeName)
+    {
+        WebElement element =  wait.until(ExpectedConditions.presenceOfElementLocated(searchBoxLoc));
+        element.clear();
+        element.sendKeys(EmployeeName);
+    }
+
+
+
+    public List<String> getSingleRowDataPointsDistribution() {
+        List<String> actualDirectReport = new ArrayList<>();
+
+        // Locate the table using JavaScript Executor
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        WebElement table = (WebElement) js.executeScript("return document.querySelector('table.table.table-borderless.direct-reportees');");
+        System.out.println("Table found.");
+
+        // Locate the rows using JavaScript Executor
+        List<WebElement> rows = (List<WebElement>) js.executeScript("return arguments[0].getElementsByTagName('tr');", table);
+        System.out.println("Number of rows found: " + rows.size());
+
+        // Loop through each row to get only the first valid row
+        for (WebElement row : rows) {
+            List<WebElement> cells = (List<WebElement>) js.executeScript("return arguments[0].getElementsByTagName('td');", row);
+            List<String> rowData = new ArrayList<>();
+
+            // Check if cells are found
+            if (!cells.isEmpty()) {
+                for (WebElement cell : cells) {
+                    String value = (String) js.executeScript("return arguments[0].innerText.trim();", cell);
+                    // Only add the value if it's not "Add Points"
+                    if (!value.equals("Add Points")) {
+                        rowData.add(value);
+                    }
+                }
+
+                // Only add rowData if it contains valid data
+                if (!rowData.isEmpty()) {
+                    // Return the first valid row and exit
+                    return rowData;
+                }
+            }
+        }
+
+        // Return an empty list if no valid row is found
+        return actualDirectReport;
+    }
+
+
+    @Step("Click View transaction button")
+    public void clickViewTransactionButton()
+    {
+        wait.until(ExpectedConditions.presenceOfElementLocated(btn_clickViewTranscationLoc)).click();
+    }
+
+
+
+    public List<String> getTransactionTable()
+    {
+        List<String> actualDirectReport = new ArrayList<>();
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        WebElement transactionTable = (WebElement) js.executeScript("return document.querySelector('.view-transaction-table');");
+        System.out.println("Table found");
+
+
+        // Locate the rows using JavaScript Executor
+        List<WebElement> rows = (List<WebElement>) js.executeScript("return arguments[0].getElementsByTagName('tr');", transactionTable);
+        System.out.println("Number of rows found: " + rows.size());
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

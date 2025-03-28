@@ -3,6 +3,7 @@ package Testcase.Admin.Scenario_07;
 import Cipherplus.Base.BaseClass;
 import Cipherplus.Pages.AdminPage.pointsDistribution;
 import Cipherplus.Pages.dashBoard;
+import Utilities.RandomNumberPoints;
 import Utilities.dataBaseConnect;
 import Utilities.readExcel;
 import io.qameta.allure.*;
@@ -23,15 +24,15 @@ public class pointsDistributionTest extends BaseClass {
     dashBoard obj_dashBoard = new dashBoard();
     pointsDistribution obj_pointsDistribution = new pointsDistribution();
     dataBaseConnect obj_dataBaseConnect =new dataBaseConnect();
+    RandomNumberPoints obj_RandomNumberPoints = new RandomNumberPoints();
 
-
-
-
-
-
-
-
-
+   protected  static String pointEarned ;
+   protected  static String pointsDistribution;
+    protected  static String lifetimePoints;
+   protected  static String point;
+    protected static String AddPointsProvideEmployee;
+    protected static int AddPointsValue;
+    private static String actualPointsForDistribution;
 
 
     @BeforeClass(groups = "BaseLogin")
@@ -67,9 +68,9 @@ public class pointsDistributionTest extends BaseClass {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
 
-        String pointEarned = obj_pointsDistribution.locatePointsEarned();
-        String pointsDistribution = obj_pointsDistribution.locatePointsForDistribution();
-        String lifetimePoints = obj_pointsDistribution.locateLifePoints();
+        pointEarned = obj_pointsDistribution.locatePointsEarned();
+        pointsDistribution = obj_pointsDistribution.locatePointsForDistribution();
+        lifetimePoints = obj_pointsDistribution.locateLifePoints();
 
         while(resultSet.next()) {
             if (pointEarned.equals("Points Earned")) {
@@ -167,12 +168,6 @@ public class pointsDistributionTest extends BaseClass {
     }
 
 
-
-
-
-
-
-
     @Test(priority = 4, description = "Verify if the admin is able to provide points for their direct reportees", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Point Distribution"})
     @Description("This attempt aims to verify if the admin can provide points and validate those points using the database and UI after they have been provided.")
     @Severity(SeverityLevel.CRITICAL)
@@ -182,58 +177,80 @@ public class pointsDistributionTest extends BaseClass {
             @Feature("Direct Reportee"),
             @Feature("Add points")
     })
-    public void VerifyProvidePoints()
-    {
-      obj_pointsDistribution.clickAddPointsButton();
-      String AddPointsProvideEmployee = obj_pointsDistribution.getNameFromAddPoints();
-      String query = " SELECT  PointsEarned, LifetimePoints, PointsForDistribution FROM Employee " +
-              "WHERE Manager ='testing.team_iat@ilink-systems.com' and isActive=1 and Name =?";
+    public void VerifyProvidedDistributePoints() {
+        // Get the points distribution value as a string
+        point = obj_pointsDistribution.getPointsForDistribution();
+
+        int pointsDistribution = Integer.parseInt(point);
+
+        obj_pointsDistribution.clickAddPointsButton();
+        AddPointsProvideEmployee = obj_pointsDistribution.getNameFromAddPoints();
+        String query = "SELECT PointsEarned, LifetimePoints, PointsForDistribution FROM Employee " +
+                "WHERE Manager ='testing.team_iat@ilink-systems.com' and isActive=1 and Name =?";
         Connection connection = obj_dataBaseConnect.dbconnect();
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query))
-        {
-            preparedStatement.setString(1,AddPointsProvideEmployee);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, AddPointsProvideEmployee);
             String expectedEarnedPoints = "";
-            String expectedLifeTimePoints ="";
-            String expectedPointsForDistribution ="";
+            String expectedLifeTimePoints = "";
+            String expectedPointsForDistribution = "";
 
-            try(ResultSet resultSet  = preparedStatement.executeQuery())
-            {
-                while(resultSet.next())
-                {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
                     expectedEarnedPoints = resultSet.getString("PointsEarned");
-                     expectedLifeTimePoints = resultSet.getString("LifetimePoints");
+                    expectedLifeTimePoints = resultSet.getString("LifetimePoints");
                     expectedPointsForDistribution = resultSet.getString("PointsForDistribution");
                 }
             }
+
             String actualEarnedPoints = obj_pointsDistribution.getEarnedPointsFromAddPoints();
             String actualLifeTimePoints = obj_pointsDistribution.getLifeTimePointsFromAddPoints();
-            String actualPointsForDistribution = obj_pointsDistribution.getPointsForDistributionFromAddPoints();
+            actualPointsForDistribution = obj_pointsDistribution.getPointsForDistributionFromAddPoints();
 
+            Assert.assertEquals(actualEarnedPoints, expectedEarnedPoints, "Earned Points not Matched in Add Points");
+            Assert.assertEquals(actualLifeTimePoints, expectedLifeTimePoints, "LifeTime points not matched in Add Points");
+            Assert.assertEquals(actualPointsForDistribution, expectedPointsForDistribution, "Points for Distribution is not matched");
 
-            Assert.assertEquals(actualEarnedPoints,expectedEarnedPoints,"Earned Points not Matched in Add Points");
-            Assert.assertEquals(actualLifeTimePoints,expectedLifeTimePoints,"LifeTime points not matched in Add Points");
-            Assert.assertEquals(actualPointsForDistribution,expectedPointsForDistribution,"points for Distribution is not matched");
+            obj_pointsDistribution.selectPointsType("Distribute");
+            AddPointsValue = RandomNumberPoints.generateRandomNumber();
+            obj_pointsDistribution.enterAddPoints(Integer.toString(AddPointsValue));
+            obj_pointsDistribution.clickSubmitButtonAddPoints();
 
+            String expectedSubtracteValuePointsDistribution = Integer.toString(pointsDistribution - AddPointsValue);
+            Thread.sleep(2000);
+            String actualValueFromPointsDistribution = obj_pointsDistribution.getPointsForDistribution();
+            Assert.assertEquals(actualValueFromPointsDistribution, expectedSubtracteValuePointsDistribution);
 
-
-
-
-
-
-
-
-
-
-
-
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+
+
+    public void verifyTransactionsTableAndEmployeePoints()
+    {
+        obj_pointsDistribution.SearchEmployee(AddPointsProvideEmployee);
+        List<String> actualDirectReport = new ArrayList<>();
+        actualDirectReport = obj_pointsDistribution.getSingleRowDataPointsDistribution();
+        obj_pointsDistribution.clickAddPointsButton();
+        obj_pointsDistribution.clickViewTransactionButton();
+
+
+
+
 
 
     }
+
+
+
+
+
+
 
 
 
