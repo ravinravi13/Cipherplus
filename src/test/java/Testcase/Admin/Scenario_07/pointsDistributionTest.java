@@ -30,7 +30,7 @@ public class pointsDistributionTest extends BaseClass {
    protected  static String pointsDistribution;
     protected  static String lifetimePoints;
    protected  static String point;
-    protected static String AddPointsProvideEmployee;
+   public static String AddPointsProvideEmployee;
     protected static int AddPointsValue;
     private static String actualPointsForDistribution;
 
@@ -89,7 +89,7 @@ public class pointsDistributionTest extends BaseClass {
     }
 
 
- //   @Test(priority = 2, description = "Verify the names and points of direct reportees", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Point Distribution"})
+    @Test(priority = 2, description = "Verify the names and points of direct reportees", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Point Distribution"})
     @Description("This attempt aims to verify the earned points, distributed points, and lifetime points, and to cross-check them with the database")
     @Severity(SeverityLevel.CRITICAL)
     @Features({
@@ -145,7 +145,7 @@ public class pointsDistributionTest extends BaseClass {
 
 
 
-  //  @Test(priority = 3, description = "Verify the names and points of direct reportees", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Point Distribution"})
+   // @Test(priority = 3, description = "Verify the names and points of direct reportees", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Point Distribution"})
     @Description("This attempt aims to verify the earned points, distributed points, and lifetime points, and to cross-check them with the database")
     @Severity(SeverityLevel.CRITICAL)
     @Features({
@@ -187,6 +187,9 @@ public class pointsDistributionTest extends BaseClass {
         AddPointsProvideEmployee = obj_pointsDistribution.getNameFromAddPoints();
         String query = "SELECT PointsEarned, LifetimePoints, PointsForDistribution FROM Employee " +
                 "WHERE Manager ='testing.team_iat@ilink-systems.com' and isActive=1 and Name =?";
+
+
+
         Connection connection = obj_dataBaseConnect.dbconnect();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -231,26 +234,44 @@ public class pointsDistributionTest extends BaseClass {
 
 
 
-    public void verifyTransactionsTableAndEmployeePoints()
+    @Test(priority = 5, description = "Verify if the admin is able to assign points to themselves.", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Point Distribution"})
+    @Description("\"This test attempts to verify the 'All Manager' feature by checking if the admin is able to assign points to themselves")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({
+            @Feature("Admin"),
+            @Feature("All Manager")
+    })
+    public void verifyAddPointsALLManager()
     {
-        obj_pointsDistribution.SearchEmployee(AddPointsProvideEmployee);
-        List<String> actualDirectReport = new ArrayList<>();
-        actualDirectReport = obj_pointsDistribution.getSingleRowDataPointsDistribution();
-        obj_pointsDistribution.clickAddPointsButton();
-        obj_pointsDistribution.clickViewTransactionButton();
+        obj_pointsDistribution.clickAllManagerButton();
+        obj_pointsDistribution.SearchEmployee("testing");
+       boolean actual =  obj_pointsDistribution.checkAddPointButton();
+       Assert.assertEquals(actual,true,"Button is enabled");
+    }
 
-
-
-
-
-
+    @Test(priority = 6, description = "Verify if the admin is able to assign points to themselves in All Employee", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Point Distribution"})
+    @Description("\"This test attempts to verify the 'All Employee' feature by checking if the admin is able to assign points to themselves")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({
+            @Feature("Admin"),
+            @Feature("All Employee")
+    })
+    public void verifyAddAllEmployee()
+    {
+        obj_pointsDistribution.clickAllEmployeeButton();
+        obj_pointsDistribution.SearchEmployee("testing");
+        boolean actual =  obj_pointsDistribution.checkAddPointButton();
+        Assert.assertEquals(actual,true,"Button is enabled");
     }
 
 
 
 
 
-
+/*
+ query="  select E.Name ,T.Name,T.Date,T.EmpName,T.Type,T.Points from [dbo].[Transaction] T inner join Employee E on T.UserId=E.EmployeeId;"
+ query="  select ? ,?,?,?,?,? from [dbo].[Transaction] T inner join Employee E on T.UserId=E.EmployeeId;
+ */
 
 
 

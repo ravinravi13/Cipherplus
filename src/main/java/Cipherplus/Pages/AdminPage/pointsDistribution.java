@@ -14,12 +14,10 @@ import java.util.*;
 public class pointsDistribution extends BaseClass {
 
 
-
-
     By adminLinkLoc = By.linkText("Admin");
     By pointsDistributionLoc = By.xpath("//h4[text()='Points Distribution']");
     By dropBU = By.xpath("//button[@class='btn dropdown-toggle']");
-    By directReportLoc =  By.xpath("//span[text()='Direct Reportees']");
+    By directReportLoc = By.xpath("//span[text()='Direct Reportees']");
     By tableDirectReport = By.xpath("//table[contains(@class,'table table-borderless')]//tbody//tr");
     By tableDirectReportData = By.xpath("(//table[contains(@class,'table table-borderless')]//td)");
     By pointsEarnedLabel = By.xpath("//div[text()='Points Earned']");
@@ -38,35 +36,26 @@ public class pointsDistribution extends BaseClass {
     By btn_Submit = By.xpath("//button[@type='submit']");
     By searchBoxLoc = By.xpath("//input[@placeholder='Search']");
     By btn_clickViewTranscationLoc = By.xpath("//button[text()=' View Transaction']");
-
-
-
-
-
-
-
-
+    By btn_allManagerLoc = By.xpath("//span[text()='All Managers']");
+    By btn_allEmployeeLoc = By.xpath("//span[text()='All Employees']");
 
 
 
     @Step("Click Admin Link in Navigation Bar")
-    public void clickAdminNav()
-    {
+    public void clickAdminNav() {
         wait.until(ExpectedConditions.presenceOfElementLocated(adminLinkLoc)).click();
     }
 
     @Step("Click Points Distribution Conatiner")
-    public void clickPointsDistribution()
-    {
+    public void clickPointsDistribution() {
         wait.until(ExpectedConditions.presenceOfElementLocated(pointsDistributionLoc)).click();
     }
 
 
     @Step("Select BU dropdown as :  {0}")
-    public void selectBUDropDown(String BUName)
-    {
-      WebElement BUDropdown =  wait.until(ExpectedConditions.presenceOfElementLocated(dropBU));
-        Select BUdrop = new Select (BUDropdown);
+    public void selectBUDropDown(String BUName) {
+        WebElement BUDropdown = wait.until(ExpectedConditions.presenceOfElementLocated(dropBU));
+        Select BUdrop = new Select(BUDropdown);
         BUdrop.selectByVisibleText("");
     }
 
@@ -107,7 +96,7 @@ public class pointsDistribution extends BaseClass {
                 // Only add rowData if it contains valid data
                 if (!rowData.isEmpty()) {
 //                     System.out.println("Row data: " + rowData);
-                     actualDirectReport.add(rowData);
+                    actualDirectReport.add(rowData);
                     rowCount++; // Increment the counter after adding a valid row
                 }
             }
@@ -117,45 +106,37 @@ public class pointsDistribution extends BaseClass {
     }
 
 
-
-
     @Step("Locate Points Earned label")
-   public String locatePointsEarned()
-   {
-       WebElement pointEarnedWebElement = wait.until(ExpectedConditions.presenceOfElementLocated(pointsEarnedLabel));
-       return pointEarnedWebElement.getText();
-   }
+    public String locatePointsEarned() {
+        WebElement pointEarnedWebElement = wait.until(ExpectedConditions.presenceOfElementLocated(pointsEarnedLabel));
+        return pointEarnedWebElement.getText();
+    }
 
     @Step("Locate Points for Distribution label")
-    public String locatePointsForDistribution()
-    {
+    public String locatePointsForDistribution() {
         WebElement pointForDistributionWebElement = wait.until(ExpectedConditions.presenceOfElementLocated(pointForDistributionLabel));
         return pointForDistributionWebElement.getText();
     }
 
     @Step("Locate Lifetime Points label")
-    public String locateLifePoints()
-    {
+    public String locateLifePoints() {
         WebElement lifePointsWebElement = wait.until(ExpectedConditions.presenceOfElementLocated(lifePointsLabel));
         return lifePointsWebElement.getText();
     }
 
 
     @Step("Get points of points Earned")
-    public String getPointsEarned()
-    {
+    public String getPointsEarned() {
         return wait.until(ExpectedConditions.presenceOfElementLocated(txt_pointsEarnedLabel)).getText();
     }
 
     @Step("Get points of points for distribution")
-    public String getPointsForDistribution()
-    {
+    public String getPointsForDistribution() {
         return wait.until(ExpectedConditions.presenceOfElementLocated(txt_pointForDistributionLabel)).getText();
     }
 
     @Step("Get points of Life time points")
-    public String getLifetimePoints()
-    {
+    public String getLifetimePoints() {
         return wait.until(ExpectedConditions.presenceOfElementLocated(txt_lifePointsLabel)).getText();
     }
 
@@ -183,65 +164,55 @@ public class pointsDistribution extends BaseClass {
 
 
     @Step("Get Name from UI who to provide")
-    public String  getNameFromAddPoints()
-    {
+    public String getNameFromAddPoints() {
         return wait.until(ExpectedConditions.presenceOfElementLocated(txt_Name)).getText();
 
     }
 
     @Step("Check Earned points who to Provide UI side")
-    public String getEarnedPointsFromAddPoints()
-    {
+    public String getEarnedPointsFromAddPoints() {
         return wait.until(ExpectedConditions.presenceOfElementLocated(txt_EarnedPointAddPoints)).getText();
     }
 
     @Step("Check Lifetime points who to Provide UI side")
-    public String getLifeTimePointsFromAddPoints()
-    {
+    public String getLifeTimePointsFromAddPoints() {
         return wait.until(ExpectedConditions.presenceOfElementLocated(txt_LifetimePointsAddPoints)).getText();
     }
 
     @Step("Check Points for Distribution who to Provide UI side")
-    public String getPointsForDistributionFromAddPoints()
-    {
+    public String getPointsForDistributionFromAddPoints() {
         return wait.until(ExpectedConditions.presenceOfElementLocated(txt_pointsForDistributionAddPoints)).getText();
     }
 
 
-
     @Step("Select Points Type as  : {0}")
-    public void selectPointsType(String Type)
-    {
-       WebElement element =  wait.until(ExpectedConditions.presenceOfElementLocated(dropDown_SelectPointns));
-       Select pointsType = new Select(element);
-       pointsType.selectByVisibleText(Type);
+    public void selectPointsType(String Type) {
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(dropDown_SelectPointns));
+        Select pointsType = new Select(element);
+        pointsType.selectByVisibleText(Type);
     }
 
 
     @Step("Enter the Points : {0}")
-    public void enterAddPoints(String points)
-    {
-        WebElement element =  wait.until(ExpectedConditions.presenceOfElementLocated(txt_addPoints));
+    public void enterAddPoints(String points) {
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(txt_addPoints));
         element.clear();
         element.sendKeys(points);
     }
 
 
     @Step("Click Submit Button in Add")
-   public void clickSubmitButtonAddPoints()
-   {
-       wait.until(ExpectedConditions.presenceOfElementLocated(btn_Submit)).click();
-   }
+    public void clickSubmitButtonAddPoints() {
+        wait.until(ExpectedConditions.presenceOfElementLocated(btn_Submit)).click();
+    }
 
 
-   @Step("Enter the Employee in search box  : {0}")
-    public void SearchEmployee(String EmployeeName)
-    {
-        WebElement element =  wait.until(ExpectedConditions.presenceOfElementLocated(searchBoxLoc));
+    @Step("Enter the Employee in search box  : {0}")
+    public void SearchEmployee(String EmployeeName) {
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(searchBoxLoc));
         element.clear();
         element.sendKeys(EmployeeName);
     }
-
 
 
     public List<String> getSingleRowDataPointsDistribution() {
@@ -285,15 +256,12 @@ public class pointsDistribution extends BaseClass {
 
 
     @Step("Click View transaction button")
-    public void clickViewTransactionButton()
-    {
+    public void clickViewTransactionButton() {
         wait.until(ExpectedConditions.presenceOfElementLocated(btn_clickViewTranscationLoc)).click();
     }
 
 
-
-    public List<String> getTransactionTable()
-    {
+    public List<String> getTransactionTable() {
         List<String> actualDirectReport = new ArrayList<>();
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -305,9 +273,22 @@ public class pointsDistribution extends BaseClass {
         List<WebElement> rows = (List<WebElement>) js.executeScript("return arguments[0].getElementsByTagName('tr');", transactionTable);
         System.out.println("Number of rows found: " + rows.size());
 
+        // Loop through each row to get only the first valid row
+        for (WebElement row : rows) {
+            List<WebElement> cells = (List<WebElement>) js.executeScript("return arguments[0].getElementsByTagName('td');", row);
+            List<String> rowData = new ArrayList<>();
 
+            // Check if cells are found
+            if (!cells.isEmpty()) {
+                for (WebElement cell : cells) {
+                    String value = (String) js.executeScript("return arguments[0].innerText.trim();", cell);
+                    actualDirectReport.add(value);
 
+                }
+            }
 
+        }
+        return actualDirectReport;
     }
 
 
@@ -316,31 +297,34 @@ public class pointsDistribution extends BaseClass {
 
 
 
+    @Step("Click All Manager button")
+    public void clickAllManagerButton() {
+        wait.until(ExpectedConditions.presenceOfElementLocated(btn_allManagerLoc)).click();
+    }
 
 
+    @Step("Click All Employee button")
+    public void clickAllEmployeeButton() {
+        wait.until(ExpectedConditions.presenceOfElementLocated(btn_allEmployeeLoc)).click();
+    }
+
+    @Step("Click All Employee button")
+    public boolean checkAddPointButton() {
+        boolean result;
+      WebElement element =  wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[text()='Add Points']")));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String value = (String) js.executeScript("return arguments[0].getAttribute('title');", element);
+
+        if(value.equals("You cannot give points to yourself"))
+        {
+            result = true;
+        }
+        else {result =false;}
+
+        return result;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 
 
