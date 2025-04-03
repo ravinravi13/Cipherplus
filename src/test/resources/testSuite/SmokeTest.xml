@@ -77,7 +77,36 @@
     <classes>
         <class name="Testcase.Scenario_06.cheerUpBuddyTest"/>
     </classes>
-</test>
+
+   </test>
+
+  <test name="Scenario 7 Admin Points Distribution ">
+      <groups>
+          <run>
+              <include name="BaseLogin"/>
+              <include name="Smoke Test"/>
+          </run>
+      </groups>
+      <classes>
+          <class name="Testcase.Admin.Scenario_07.pointsDistributionTest"/>
+      </classes>
+  </test>
+
+
+    <test name="Scenario 8 Admin Manage Rewards Program ">
+        <groups>
+            <run>
+                <include name="BaseLogin"/>
+                <include name="Smoke Test"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="Testcase.Admin.Scenario_07.ManagerRewardProgramTest"/>
+        </classes>
+    </test>
+
+
+
 
 
 

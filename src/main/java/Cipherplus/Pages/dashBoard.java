@@ -10,7 +10,7 @@ public class dashBoard extends BaseClass {
 
 
 
-   By txt_profileNameLoc = By.xpath("//button[contains(@class,'profile-drop btn-sm')]");
+   By txt_profileNameLoc = By.xpath("(//h5[text()='testing'])[1]");
    By txt_userNameLoc = By.xpath("//div[@class='mt-5 dashboard-title']//h5[1]");
    By btn_exploreLoc = By.xpath("//button[@class='explore-button']");
    By txt_availablePointLoc = By.xpath("//div[@class='ms-2 card1-pts']//h4[1]");

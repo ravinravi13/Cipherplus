@@ -12,6 +12,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import java.io.IOException;
@@ -598,7 +600,11 @@ public class giftStoreTest extends BaseClass {
 
 
 
-
+    @AfterClass(groups = {"BaseLogin"})
+    public void teardown()
+    {
+        BaseClass.driver.quit();
+    }
 
 
 

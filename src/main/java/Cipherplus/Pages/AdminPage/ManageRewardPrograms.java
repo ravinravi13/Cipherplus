@@ -41,8 +41,10 @@ public class ManageRewardPrograms extends BaseClass {
    By approverDropdown = By.xpath("(//select[@id='approver'])[1]");
    By addPostButton = By.xpath("//button[text()='Add Post']");
    By clearButton = By.xpath("//button[text()='Clear']");
-
-
+   By formdropdown_location = By.id("relevantLocations");
+   By PointValuesLoc = By.xpath("(//input[@id='pointValue'])[1]");
+   By eventDecriptionLoc = By.id("eventDescription");
+   By txt_eventName = By.id("eventName");
 
 
 
@@ -316,33 +318,66 @@ public class ManageRewardPrograms extends BaseClass {
 
 
 
-    public void fillOutForm(String eventName, String eventDescription, String location, int pointsValue, String offerExpires, String dateOpened, String approver) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(eventNameField)).sendKeys(eventName);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(eventDescriptionField)).sendKeys(eventDescription);
 
-        Select locationSelect = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(locationDropdown)));
-        locationSelect.selectByVisibleText(location);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(pointsValueField)).sendKeys(String.valueOf(pointsValue));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(offerExpiresField)).sendKeys(offerExpires);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(dateOpenedField)).sendKeys(dateOpened);
-
-        Select approverSelect = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(approverDropdown)));
-        approverSelect.selectByVisibleText(approver);
-    }
-
+    @Step("Click Submit button")
     public void submitForm() {
         wait.until(ExpectedConditions.elementToBeClickable(addPostButton)).click();
     }
 
+    @Step("Enter the Event description : {0}")
+    public void enterEventDescription(String description){
+      WebElement element=  wait.until(ExpectedConditions.elementToBeClickable(eventDecriptionLoc));
+      element.clear();
+      element.sendKeys(description);
+    }
+
+
+    @Step("Select Relevant location dropdown as : {0}")
+    public void selectReleventLocation(String location) {
+        WebElement element=  wait.until(ExpectedConditions.presenceOfElementLocated(formdropdown_location));
+        Select select = new Select(element);
+        select.selectByVisibleText(location);
+    }
+
+
+    @Step("Enter the Points as : {0}")
+    public void enterPointsValue(int points){
+        String strPoints = Integer.toString(points);
+        WebElement element=  wait.until(ExpectedConditions.elementToBeClickable(PointValuesLoc));
+        element.clear();
+        element.sendKeys(strPoints);
+    }
+
+    @Step("Enter the Date Opened as : {0}")
+    public void enterDateOpened(String DateOpen){
+        WebElement element=  wait.until(ExpectedConditions.elementToBeClickable(dateOpenedField));
+        element.clear();
+        element.sendKeys(DateOpen);
+    }
+
+    @Step("Enter the Offer Expires as : {0}")
+    public void enterOfferExpires(String offerExpires){
+        WebElement element=  wait.until(ExpectedConditions.elementToBeClickable(offerExpiresField));
+        element.clear();
+        element.sendKeys(offerExpires);
+    }
+
+    @Step("Select Approver name as : {0}")
+    public void selectApproverName(String ApproverName) {
+        WebElement element=  wait.until(ExpectedConditions.presenceOfElementLocated(approverDropdown));
+        Select select = new Select(element);
+        select.selectByVisibleText(ApproverName);
+    }
 
 
 
-
-
-
-
-
+    @Step("Enter the Date Opened as : {0}")
+    public void enterEventname(String name){
+        WebElement element=  wait.until(ExpectedConditions.elementToBeClickable(txt_eventName));
+        element.clear();
+        element.sendKeys(name);
+    }
 
 
 

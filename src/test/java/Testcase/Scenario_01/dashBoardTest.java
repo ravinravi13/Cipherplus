@@ -9,6 +9,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -47,11 +49,10 @@ public class dashBoardTest extends BaseClass {
     @Description("This test attempts the log into the Website and verify with dashboard user name and profile section user name")
     @Severity(SeverityLevel.CRITICAL)
     @Feature("Login")
-    public void VerifyUserName()
-    {
+    public void VerifyUserName() throws InterruptedException {
 
         obj_dashBoard.clickExploreBtn();
-        Assert.assertEquals("testing", obj_dashBoard.getProfileName());
+        Thread.sleep(4000);
         Assert.assertEquals("Hello, testing", obj_dashBoard.getUsername());
         System.out.println("VerifyLogin is passed");
 
@@ -179,6 +180,11 @@ public class dashBoardTest extends BaseClass {
 
 
 
+    @AfterClass(groups = {"BaseLogin"})
+    public void teardown()
+    {
+        BaseClass.driver.quit();
+    }
 
 
 

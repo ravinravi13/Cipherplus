@@ -2,8 +2,11 @@ package Utilities;
 
 import com.github.javafaker.Faker;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 public class TestDataGenerator {
@@ -16,7 +19,7 @@ public class TestDataGenerator {
 
     public TestDataGenerator() {
         this.faker = new Faker();
-        this.dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         this.random = new Random();
     }
 
@@ -38,10 +41,11 @@ public class TestDataGenerator {
 
     public String generateRandomDate(boolean valid) {
         if (valid) {
-            LocalDate futureDate = LocalDate.now().plusDays(random.nextInt(30) + 1);
+            // Generating a future date within the range of 5 to 10 years from now
+            LocalDate futureDate = LocalDate.now().plusYears(random.nextInt(6) + 5);
             return futureDate.format(dateFormatter);
         } else {
-            return "2023-02-30"; // Invalid date
+            return "30-02-2023"; // Returning an invalid date for the sake of example
         }
     }
 
@@ -49,8 +53,19 @@ public class TestDataGenerator {
         return faker.name().fullName();
     }
 
-
-
+    public static String generateFutureDate(String dateOpened) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            Date openedDate = sdf.parse(dateOpened); // Parse the opened date
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(openedDate);
+            calendar.add(Calendar.DAY_OF_MONTH, 30); // Add 30 days to the opened date
+            return sdf.format(calendar.getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
 

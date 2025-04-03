@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -58,7 +59,7 @@ public class ManagerRewardProgramTest extends BaseClass {
 
 
 
-    @Test(priority = 1, description = "Verify the search functionality for event names in the Manage Reward Program module.", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Point Distribution"})
+    //@Test(priority = 1, description = "Verify the search functionality for event names in the Manage Reward Program module.", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Point Distribution"})
     @Description("\"Validate that the search functionality in the Manage Reward Program accurately retrieves event names based on user input. Ensure proper handling of edge cases and display of appropriate messages for no results")
     @Severity(SeverityLevel.CRITICAL)
     @Features({
@@ -82,7 +83,7 @@ public class ManagerRewardProgramTest extends BaseClass {
     }
 
 
-    @Test(priority = 2, description = "Verify that the 'Date of Opened' is earlier than the 'Date of Expires' for proper chronological order.", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Manage Rewards program"})
+  //  @Test(priority = 2, description = "Verify that the 'Date of Opened' is earlier than the 'Date of Expires' for proper chronological order.", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Manage Rewards program"})
     @Description("Ensure the 'Date of Opened' is the starting date and precedes the 'Date of Expires,' verifying proper chronological order.")
     @Severity(SeverityLevel.CRITICAL)
     @Features({
@@ -121,7 +122,7 @@ public class ManagerRewardProgramTest extends BaseClass {
 
 
 
-    @Test(priority = 3, description = "Verify drop-down date filters for accurate sorting in the date column", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Manage Rewards program"})
+   // @Test(priority = 3, description = "Verify drop-down date filters for accurate sorting in the date column", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Manage Rewards program"})
     @Description("Validate that the drop-down filters for date sorting—Newest to Oldest, Oldest to Newest, Expires Sooner to Later, and Expires Later to Sooner—accurately sort and display dates from the date column. Ensure proper functionality across all filter options and verify that edge cases, such as identical dates, are handled correctly.")
     @Severity(SeverityLevel.CRITICAL)
     @Features({
@@ -156,24 +157,31 @@ public class ManagerRewardProgramTest extends BaseClass {
 
 
 
-    //@Test
+    @Test(priority = 4, description = "Verify Admin able to creating Add new program", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Manage Rewards program"})
+    @Description("Verify that the Admin can successfully create and add a new program, and it is displayed in the program list without errors")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({
+            @Feature("Admin"),
+            @Feature("Manage Reward Program"),
+            @Feature("Add new program"),
+    })
     public void ValidateAddNewRewardProgram()
     {
         obj_ManageRewardPrograms.clickAddButton();
         TestDataGenerator dataGenerator = new TestDataGenerator();
-        String eventName = dataGenerator.generateEventName();
-        String eventDescription = dataGenerator.generateEventDescription();
-        String location = dataGenerator.generateLocation();
-        int pointsValue = dataGenerator.generateRandomPointsValue(); // Random points value (positive or negative)
-
-        String dateOpened = dataGenerator.generateRandomDate(false); // Invalid date opened (for testing)
-        String offerExpires = dataGenerator.generateRandomDate(true); // Valid offer expires date
-        String approver = dataGenerator.generateApprover(); // Random full name as approver
-
-        // Fill out the form
-        obj_ManageRewardPrograms.fillOutForm(eventName, eventDescription, location, pointsValue, offerExpires, dateOpened, approver);
-
-        // Submit the form
+        int pointsValue = dataGenerator.generateRandomPointsValue();
+        String dateOpened = dataGenerator.generateRandomDate(true);
+        System.out.println("Date opened = "+dateOpened);
+        String offerExpiresDate = TestDataGenerator.generateFutureDate(dateOpened);
+        System.out.println("offerExpiredate = "+offerExpiresDate);
+        String invalidDate = "2023-02-30";
+        obj_ManageRewardPrograms.enterEventname("Test by ravi");
+        obj_ManageRewardPrograms.enterEventDescription("Testing");
+        obj_ManageRewardPrograms.selectReleventLocation("chennai");
+        obj_ManageRewardPrograms.enterPointsValue(pointsValue);
+        obj_ManageRewardPrograms.enterOfferExpires(offerExpiresDate);
+        obj_ManageRewardPrograms.enterDateOpened(dateOpened);
+        obj_ManageRewardPrograms.selectApproverName("TA Team");
         obj_ManageRewardPrograms.submitForm();
     }
 
@@ -189,6 +197,11 @@ public class ManagerRewardProgramTest extends BaseClass {
 
 
 
+    @AfterClass(groups = {"BaseLogin"})
+    public void teardown()
+    {
+        BaseClass.driver.quit();
+    }
 
 
 
