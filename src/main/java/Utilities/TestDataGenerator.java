@@ -67,6 +67,11 @@ public class TestDataGenerator {
         }
     }
 
+    public int generateRandomQuantity() {
+        int negativeNumber = -5; // You can define a constant or default value
+        return random.nextInt(6) + negativeNumber; // Adjusts randomly based on the set value
+    }
+
 
 
 
