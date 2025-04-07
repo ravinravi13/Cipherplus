@@ -116,6 +116,7 @@ public class cartPageTest extends BaseClass {
         obj_CartPage.clickSingleProductCartIcon();
         Thread.sleep(3000);
         obj_CartPage.clickSingleProductCartIcon();
+        Thread.sleep(2000);
         obj_CartPage.clickCartIcon();
         Thread.sleep(3000);
 

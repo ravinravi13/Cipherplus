@@ -225,6 +225,15 @@ public class ManageGifts extends BaseClass {
 
 
 
+    public Boolean checkAddNewGiftIsDisplay()
+    {
+       return wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//h5[text()='Add New Gift']"))).isDisplayed();
+    }
+
+
+
+
+
 
 
 

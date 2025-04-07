@@ -105,6 +105,18 @@
         </classes>
     </test>
 
+    <test name="Scenario 9 Admin Manage Gift">
+        <groups>
+            <run>
+                <include name="BaseLogin"/>
+                <include name="Smoke Test"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="Testcase.Admin.Scenario_07.ManageGiftsTest"/>
+        </classes>
+    </test>
+
 
 
 

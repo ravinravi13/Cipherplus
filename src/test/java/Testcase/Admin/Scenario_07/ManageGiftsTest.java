@@ -6,9 +6,11 @@ import Cipherplus.Pages.dashBoard;
 import Utilities.TestDataGenerator;
 import Utilities.dataBaseConnect;
 import Utilities.readExcel;
+import io.qameta.allure.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -47,7 +49,15 @@ public class ManageGiftsTest extends BaseClass {
     }
 
 
-   // @Test
+
+    @Test(priority = 1, description = "Verify Product Filters Functionality", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Manage Gift"})
+    @Description("Ensure that the product filter functionality works as expected across various parameters, enabling users to filter products accurately based on their preferences.")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({
+            @Feature("Admin"),
+            @Feature("Manage Gift"),
+            @Feature("Manage Gift"),
+    })
     public void VerifyAllCategoryProduct() throws IOException, InterruptedException {
         List<List<String>> expectedList = new ArrayList<>();
         Connection connection = obj_dataBaseConnect.dbconnect();
@@ -159,10 +169,15 @@ public class ManageGiftsTest extends BaseClass {
 
 
 
-
-        @Test
-    public void VerifyAddNewGift()
-    {
+    @Test(priority = 2, description = "Verify to create Add new Gift by Admin", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Manage Gift"})
+    @Description("Ensure that the admin is able to successfully create and add a new gift to the system, and verify that all related functionalities work as expected.")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({
+            @Feature("Admin"),
+            @Feature("Manage Gift"),
+            @Feature("Manage Gift"),
+    })
+    public void VerifyAddNewGift() {
         TestDataGenerator dataGenerator = new TestDataGenerator();
 
         // Initiating the add gift process
@@ -173,17 +188,29 @@ public class ManageGiftsTest extends BaseClass {
         obj_ManageGifts.enterGiftDescription("Automation Testing");
         obj_ManageGifts.selectGiftCategeory("Organic Store");
         obj_ManageGifts.selectGiftLocation("chennai");
-        String pointvalue = Integer.toString(dataGenerator.generateRandomPointsValue());
-        obj_ManageGifts.enterGiftPointsValue(pointvalue);
-        String quantityvalue = Integer.toString(dataGenerator.generateRandomQuantity());
-        obj_ManageGifts.enterGiftQuantity("1");
+
+        int pointValue = dataGenerator.generateRandomPointsValue();
+        int quantityValue = dataGenerator.generateRandomQuantity();
+
+        obj_ManageGifts.enterGiftPointsValue(Integer.toString(pointValue));
+        obj_ManageGifts.enterGiftQuantity(Integer.toString(quantityValue));
         obj_ManageGifts.enterGiftProductName("Testing");
+
         // Sending updated product image
         obj_ManageGifts.sendProductImage(System.getProperty("user.dir") + "//testData//Image//testimage.jpg");
-        if((pointvalue < 0) || (quantityvalue < 0))
-        {
+
+        // Check if point value or quantity value is below 0
+        if (pointValue < 0 || quantityValue < 0) {
+            // Handle the case where point value or quantity value is negative
+            Assert.fail("Point value or quantity value is negative. Cannot add gift.");
+        } else {
+            // Proceed to add the gift if both values are valid
             obj_ManageGifts.clickAddGiftButton();
+
+            // Verify if the new gift is displayed
             obj_ManageGifts.enterSearchBox("Automation Testing");
+            boolean res = obj_ManageGifts.checkAddNewGiftIsDisplay();
+            Assert.assertEquals(res, true);
         }
     }
 
