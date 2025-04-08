@@ -59,7 +59,7 @@ public class ManagerRewardProgramTest extends BaseClass {
 
 
 
-    //@Test(priority = 1, description = "Verify the search functionality for event names in the Manage Reward Program module.", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Point Distribution"})
+    @Test(priority = 1, description = "Verify the search functionality for event names in the Manage Reward Program module.", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Point Distribution"})
     @Description("\"Validate that the search functionality in the Manage Reward Program accurately retrieves event names based on user input. Ensure proper handling of edge cases and display of appropriate messages for no results")
     @Severity(SeverityLevel.CRITICAL)
     @Features({
@@ -83,7 +83,7 @@ public class ManagerRewardProgramTest extends BaseClass {
     }
 
 
-  //  @Test(priority = 2, description = "Verify that the 'Date of Opened' is earlier than the 'Date of Expires' for proper chronological order.", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Manage Rewards program"})
+    @Test(priority = 2, description = "Verify that the 'Date of Opened' is earlier than the 'Date of Expires' for proper chronological order.", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Manage Rewards program"})
     @Description("Ensure the 'Date of Opened' is the starting date and precedes the 'Date of Expires,' verifying proper chronological order.")
     @Severity(SeverityLevel.CRITICAL)
     @Features({
@@ -122,7 +122,7 @@ public class ManagerRewardProgramTest extends BaseClass {
 
 
 
-   // @Test(priority = 3, description = "Verify drop-down date filters for accurate sorting in the date column", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Manage Rewards program"})
+    @Test(priority = 3, description = "Verify drop-down date filters for accurate sorting in the date column", groups = {"Login", "Smoke Test", "Regression Test", "Admin", "Manage Rewards program"})
     @Description("Validate that the drop-down filters for date sorting—Newest to Oldest, Oldest to Newest, Expires Sooner to Later, and Expires Later to Sooner—accurately sort and display dates from the date column. Ensure proper functionality across all filter options and verify that edge cases, such as identical dates, are handled correctly.")
     @Severity(SeverityLevel.CRITICAL)
     @Features({

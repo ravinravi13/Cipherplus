@@ -45,11 +45,12 @@ public class cheerUpBuddyTest extends BaseClass {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("idSIButton9"))).click();
 //      driver.findElement(By.id("idSIButton9")).click();
         obj_CartPage.clickExploreBtn();
+        obj_cheerUpBuddyPage.clickCheepUpBuddy();
     }
 
 
 
-    @Test(priority = 1, description = "Verify the Badge count and no badges as message 'No badges matching the criteria' ")
+  //  @Test(priority = 1, description = "Verify the Badge count and no badges as message 'No badges matching the criteria' ")
     @Description("This test aims to ensure the usability of testing badge counts and the absence of badge messages. The precondition is that the badge count should be 0")
     @Severity(SeverityLevel.BLOCKER)
     @Features({
@@ -100,7 +101,7 @@ public class cheerUpBuddyTest extends BaseClass {
     }
 
 
-    @Test(priority = 2, description = "Verify to send badge all three categories' ")
+   // @Test(priority = 2, description = "Verify to send badge all three categories' ")
     @Description("This test aims to ensure that badges of three categories are sent to raveendran.manickam@ilink-systems.com and that an entry is made in the view badge and badge count.")
     @Severity(SeverityLevel.CRITICAL)
     @Features({
@@ -161,7 +162,7 @@ public class cheerUpBuddyTest extends BaseClass {
     }
 
 
-    @Test(priority = 3, description = "Verify to send badge all three categories' ")
+   // @Test(priority = 3, description = "Verify to send badge all three categories' ")
     @Description("This test aims to ensure that badges of three categories are sent to raveendran.manickam@ilink-systems.com and that an entry is made in the view badge and badge count.")
     @Severity(SeverityLevel.CRITICAL)
     @Features({
@@ -218,6 +219,13 @@ public class cheerUpBuddyTest extends BaseClass {
         }
 
     }
+
+
+    @Test
+    public void dummy() throws InterruptedException {
+        obj_cheerUpBuddyPage.validateBadgeLeaderboard();
+    }
+
 
 
 

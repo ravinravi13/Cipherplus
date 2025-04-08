@@ -1,0 +1,1 @@
+{"uuid":"a11fa1d4-dcb2-439c-9a16-3e3931d227cb","name":"Testcase.Scenario_06.cheerUpBuddyTest","children":["729d18ad-2b1b-4da0-b9b9-59317a48edba"],"befores":[],"afters":[{"name":"teardown","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1744116098559,"stop":1744116099407}],"start":1744116080182,"stop":1744116099451}
